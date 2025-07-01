@@ -3591,7 +3591,7 @@ transition: all 1s;
     display: flex
 }
 .craft-img{
-    background-image: url(../img/home/career-cat-img.jpg);
+    /* background-image: url(../img/home/career-cat-img.jpg); */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

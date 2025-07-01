@@ -50,6 +50,7 @@
                   <ul class="sidebar-submenu">
                     <li><a href="{{ route('manage-career-category.index') }}">Category</a></li>
                     <li><a href="{{ route('manage-category-listing.index') }}">Category Listing</a></li>
+                    <li><a href="{{ route('manage-job-details.index') }}">Job Details</a></li>
                   </ul>
                 </li>
                

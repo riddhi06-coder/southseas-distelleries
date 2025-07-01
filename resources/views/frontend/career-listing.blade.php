@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -43,7 +44,7 @@
         <div class="wrap">
           <div class="row">
             <div class="col-md-12">
-              <a class="btn_close"><img src="{{ asset('frontend/assets/img/icon/close.pn') }}"></a>
+              <a class="btn_close"><img src="{{ asset('frontend/assets/img/icon/close.png') }}"></a>
             </div>
           </div>
           <div class="row">
@@ -73,67 +74,131 @@
             </div>
           </div>
           <div class="social">
-       
+
             <p>©2024 South Seas Distilleries & Breweries Pvt. Ltd.</p>
           </div>
         </div>
       </div>
     </div>
 
-    <section class="our-ethos-one our-legacy-wrap careers-title-wrap">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="page_title wow fadeInUp animated" data-wow-delay="600ms" data-wow-duration="600ms">
-                        <h1>{{ $banner->banner_heading ?? '' }}</h1>
-
-                        {{-- Show banner image if available --}}
-                        @if (!empty($banner->banner_image))
-                            <img src="{{ asset('uploads/careers/' . $banner->banner_image) }}" alt="Banner Image" class="img-fluid">
-                        @else
-                            <img src="{{ asset('frontend/assets/img/logo/page-title-icon.png') }}" alt="Default Icon">
-                        @endif
-                    </div>
-                </div>
+    <section class="craft-title-wrap">
+      <div class="container-fluid no-padding">
+        <div class="row no-margin craft-row">
+          <div class="col-md-4 no-padding craft-img"
+              @if(!empty($banner->banner_image))
+                        style="background-image: url('{{ asset('uploads/careers/' . $banner->banner_image) }}'); background-size: cover; background-position: center; background-repeat: no-repeat;"
+                    @endif>
+          </div>
+          <div class="col-md-8 no-padding">
+            <div class="craft-text">
+              <h4>{{ $banner->banner_heading ?? '' }}</h4>
             </div>
+          </div>
         </div>
+      </div>
     </section>
 
-    <div class="career-main-wrap">
-        <div class="no-padding">
-            <div class="row no-margin career-main-flex">
-                <div class="col-md-6 no-padding career-main-img"
-                    @if(!empty($banner->section_images))
-                        style="background-image: url('{{ asset('uploads/careers/' . $banner->section_images) }}'); background-size: cover; background-position: center; background-repeat: no-repeat;"
-                    @endif>
-                </div>
-                <div class="col-md-6 no-padding">
-                    <div class="career-main-text">
-                        <p>{!! $banner->introduction ?? '' !!}</p>
+
+    <div class="openings-dashboard-wrap">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="openings-search">
+              <p>{!! $banner->section_heading ?? '' !!}</p>
+
+              <div class="search-box-wrap">
+                <div class="row">
+
+                  <!-- First Column -->
+                  <div class="col-md-9">
+                    <!-- Search Input with Icon -->
+                    <div class="input-group search-box">
+                      <input type="text" class="form-control" placeholder="Search by category, keyword, or location">
+                      <span class="input-group-addon">
+                        <i class="fa fa-search"></i>
+                      </span>
                     </div>
+
+                    <!-- Checkbox and Button Row -->
+                    <div class="checkbox-row">
+                      <div class="checkbox">
+                        <label><input type="checkbox"> Entry Level Jobs</label>
+                      </div>
+                      <button class="btn btn-primary">Share Search Results <img src="{{ asset('frontend/assets/img/icon/share.png') }}" /></button>
+                    </div>
+                  </div>
+
+                  <!-- Second Column -->
+                  <div class="col-md-3">
+                    <!-- Job Search Filters Dropdown -->
+                    <div class="career-dropdown">
+                      <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                          Job Search Filters <img src="{{ asset('frontend/assets/img/icon/down-arrow.png') }}" />
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a href="#">Remote Only</a></li>
+                          <li><a href="#">Full-Time</a></li>
+                          <li><a href="#">Part-Time</a></li>
+                          <li><a href="#">Internships</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
 
-
-    <section class="career-featured-sec">
+    
+    <section class="openings-list-wrap">
       <div class="container">
-        <h3>{{ $banner->section_heading ?? '' }}</h3>
         <div class="row">
-            @foreach($details as $item)
-                <div class="col-md-2">
-                    <div class="featured-text">
-                        <h4><a href="{{ route('career.category', $item->category_slug) }}">{{ $item->category_name }}</a></h4>
-                    </div>
-                </div>
-            @endforeach
-        </div>
 
-        <div class="row">
-          <div class="col-md-12 mt-30 text-center">
-            <a href="careers-category.html" class="btn">Search All Jobs</a>
+          <div class="col-md-12">
+            <div class="selected-filter">
+              <ul>
+                <li><img src="{{ asset('frontend/assets/img/icon/x-mark.png') }}">Human Resources</li>
+              </ul>
+            </div>
+            <table class="table responsive-job-table">
+                <thead class="single-head-opening">
+                    <tr>
+                    <th><h2 class="text-left">Job</h2></th>
+                    <th><h2>Department</h2></th>
+                    <th><h2>Location</h2></th>
+                    <th><h2>&nbsp;</h2></th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($details as $item)
+                    <tr class="single-opening">
+                        <td>
+                        <a href="#">
+                            <h2 class="text-left">{{ $item->job_role }}</h2>
+                        </a>
+                        </td>
+                        <td><h4>{{ $item->department }}</h4></td>
+                        <td><h6>{{ $item->location }}</h6></td>
+                        <td>
+                        <div class="opening-btn">
+                            <a href="#">
+                            <button class="btn btn-primary">Apply Now</button>
+                            </a>
+                            <a href="#"><img src="{{ asset('frontend/assets/img/icon/share.png') }}" alt="Share" /></a>
+                        </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+                </table>
+
           </div>
+
         </div>
       </div>
     </section>
@@ -150,8 +215,6 @@
         </div>
       </div>
     </section>
-
-
     <section class="footer-one">
       <div class="container">
         <div class="row">
@@ -187,8 +250,6 @@
         </div>
       </div>
     </section>
-
-
     <section class="footer-two">
       <div class="container">
         <div class="row">
@@ -202,8 +263,6 @@
         </div>
       </div>
     </section>
-
-
     <!-- Modal -->
     <div id="legacy-one" class="modal legacy-content-popup fade" role="dialog">
       <div class="modal-dialog">
@@ -265,7 +324,6 @@
 
       </div>
     </div>
-
     <div id="legacy-two" class="modal legacy-content-popup fade" role="dialog">
       <div class="modal-dialog">
 
@@ -324,7 +382,6 @@
 
       </div>
     </div>
-
     <div id="legacy-three" class="modal legacy-content-popup fade" role="dialog">
       <div class="modal-dialog">
 
@@ -382,7 +439,6 @@
 
       </div>
     </div>
-
     <!-- popup form -->
     <div class="modal fade onload_form_popup" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -405,7 +461,7 @@
             <div class="col-md-11 no-padding">
               <div class="popup-main-title">
                 <div class="popup-main-icon">
-                  <img src="img/popup-icon.png">
+                  <img src="{{ asset('frontend/assets/img/popup-icon.png') }}">
                 </div>
                 <div class="popup-main-text">
                   <h3>Join our community.</h3>
@@ -524,14 +580,14 @@
         </div>
       </div>
     </div>
-        
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <script src="{{ asset('frontend/assets/js/owl.carousel.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/wow.min.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/custom.js') }}"></script>
 
-
-</body>
+  </body>
 </html>

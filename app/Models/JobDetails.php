@@ -5,21 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CareerCategory extends Model
+class JobDetails extends Model
 {
-     use HasFactory;
+    use HasFactory;
 
-    protected $table = 'career_category';
+    protected $table = 'job_details';
     public $timestamps = false;
 
     protected $fillable = [
+        'job_id',
         'banner_heading',
         'banner_image',
-        'section_images',
-        'introduction',
         'section_heading',
-        'category_name',
-        'category_slug',
+        'job_details',
         'inserted_at',
         'inserted_by',
         'modified_at',
@@ -27,4 +25,18 @@ class CareerCategory extends Model
         'deleted_at',
         'deleted_by',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(CareerCategory::class, 'category_id'); // or job_category_id
+    }
+
+    public function categoryList()
+    {
+        return $this->belongsTo(CareerCategoryList::class, 'job_id', 'id');
+    }
+
+
+
+
 }

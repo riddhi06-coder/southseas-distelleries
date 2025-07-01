@@ -76,6 +76,7 @@ class CareerListingController extends Controller
         $careerCategory->introduction    = $request->input('introduction');
         $careerCategory->section_heading = $request->input('section_heading');
         $careerCategory->category_name   = $request->input('category_name');
+        $careerCategory->category_slug            = Str::slug($request->input('category_name'));
         $careerCategory->inserted_at   = Carbon::now();
         $careerCategory->inserted_by   =  Auth::id();
         $careerCategory->save();
@@ -135,6 +136,7 @@ class CareerListingController extends Controller
         $careerCategory->introduction    = $request->input('introduction');
         $careerCategory->section_heading = $request->input('section_heading');
         $careerCategory->category_name   = $request->input('category_name');
+        $careerCategory->category_slug   = Str::slug($request->input('category_name'));
         $careerCategory->modified_at     = Carbon::now();
         $careerCategory->modified_by     = Auth::id();
 

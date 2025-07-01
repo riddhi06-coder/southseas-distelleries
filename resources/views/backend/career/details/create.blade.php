@@ -17,14 +17,14 @@
             <div class="page-title">
               <div class="row">
                 <div class="col-6">
-                  <h4>Add Category Form</h4>
+                  <h4>Add Job Details Form</h4>
                 </div>
                 <div class="col-6">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                    <a href="{{ route('manage-category-listing.index') }}">Home</a>
+                    <a href="{{ route('manage-job-details.index') }}">Home</a>
                     </li>
-                    <li class="breadcrumb-item active">Add Category</li>
+                    <li class="breadcrumb-item active">Add Job Details</li>
                 </ol>
 
                 </div>
@@ -37,7 +37,7 @@
                 <div class="col-md-12">
                     <div class="card">
                     <div class="card-header">
-                        <h4>Category Form</h4>
+                        <h4>Job Details Form</h4>
                         <p class="f-m-light mt-1">Fill up your true details and submit the form.</p>
                     </div>
                     <div class="card-body">
@@ -48,25 +48,10 @@
                             <div class="tab-content" id="wizard-tabContent">
                                 <div class="tab-pane fade show active" id="wizard-contact" role="tabpanel" aria-labelledby="wizard-contact-tab">
 
-                                    <form class="row g-3 needs-validation custom-input" novalidate action="{{ route('manage-category-listing.store') }}" method="POST" enctype="multipart/form-data">
+                                    <form class="row g-3 needs-validation custom-input" novalidate action="{{ route('manage-job-details.store') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
 
-                                        <div class="col-6">
-                                            <label class="form-label" for="job_category">Job Category <span class="txt-danger">*</span></label>
-                                            <select class="form-control" id="job_category" name="job_category" required>
-                                                <option value="">Select Category</option>
-                                                @foreach($categories as $category)
-                                                    <option value="{{ $category->id }}" {{ old('job_category') == $category->id ? 'selected' : '' }}>
-                                                        {{ $category->category_name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            <div class="invalid-feedback">Please select a Job Category.</div>
-                                        </div>
-
-                                        <hr>
-                                        <br><br>
-
+                                
                                         <h3>Banner Details</h3>
 
 
@@ -89,44 +74,45 @@
                                             <img id="banner-preview" src="#" alt="Image Preview" style="display: none; margin-top: 10px; max-width: 200px; max-height: 200px;">
                                         </div>
 
+
+                                        
+
+                                        <hr>
+                                        <br><br>
+
+
+
+                                        <div class="col-6">
+                                            <label class="form-label" for="job_category">Job Role <span class="txt-danger">*</span></label>
+                                            <select class="form-control" id="job_category" name="job_category" required>
+                                                <option value="">Select Job Role</option>
+                                                @foreach($jobRoles as $id => $jobRole)
+                                                    <option value="{{ $id }}" {{ old('job_category') == $id ? 'selected' : '' }}>
+                                                        {{ $jobRole }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <div class="invalid-feedback">Please select a Job Role.</div>
+                                        </div>
+
+
+                                        <!-- Banner Heading -->
+                                        <div class="col-6">
+                                            <label class="form-label" for="section_heading">Section Heading</label>
+                                            <input type="text" class="form-control" id="section_heading" name="section_heading" placeholder="Enter Banner Heading" value="{{ old('section_heading') }}">
+                                            <div class="invalid-feedback">Please enter a Banner Heading.</div>
+                                        </div>
+
                                         <!-- Heading -->
                                         <div class="col-12">
-                                            <label class="form-label" for="section_heading">Section Heading </label>
-                                            <textarea class="form-control" id="summernote" name="section_heading" placeholder="Enter Introduction" >{{ old('section_heading') }}</textarea>
+                                            <label class="form-label" for="job_details">Job Details </label>
+                                            <textarea class="form-control" id="summernote1" name="job_details" placeholder="Enter Introduction" >{{ old('job_details') }}</textarea>
                                             <div class="invalid-feedback">Please enter a short introduction.</div>
                                         </div>
 
-
-                                        <br>
-                                        <br>
-                                        <hr>
-
-                                        <!-- Job Role -->
-                                        <div class="col-6">
-                                            <label class="form-label" for="job_role">Job Role <span class="txt-danger">*</span></label>
-                                            <input type="text" class="form-control" id="job_role" name="job_role" placeholder="Enter Job Role" value="{{ old('job_role') }}" required>
-                                            <div class="invalid-feedback">Please enter a Job Role.</div>
-                                        </div>
-
-                                        
-                                        <!-- Department -->
-                                        <div class="col-6">
-                                            <label class="form-label" for="department">Department <span class="txt-danger">*</span></label>
-                                            <input type="text" class="form-control" id="department" name="department" placeholder="Enter Department" value="{{ old('department') }}" required>
-                                            <div class="invalid-feedback">Please enter a Department.</div>
-                                        </div>
-
-                                         <!-- Department -->
-                                        <div class="col-6">
-                                            <label class="form-label" for="location">Location <span class="txt-danger">*</span></label>
-                                            <input type="text" class="form-control" id="location" name="location" placeholder="Enter Location" value="{{ old('location') }}" required>
-                                            <div class="invalid-feedback">Please enter a Location.</div>
-                                        </div>
-
-
                                         <!-- Form Actions -->
                                         <div class="col-12 text-end">
-                                            <a href="{{ route('manage-category-listing.index') }}" class="btn btn-danger px-4">Cancel</a>
+                                            <a href="{{ route('manage-job-details.index') }}" class="btn btn-danger px-4">Cancel</a>
                                             <button class="btn btn-primary" type="submit">Submit</button>
                                         </div>
                                     </form>
@@ -151,6 +137,17 @@
 
        
        @include('components.backend.main-js')
+
+
+    <script>
+        $(document).ready(function() {
+            $('#summernote1').summernote({
+            height: 1000, // Adjust height as needed
+            focus: true   // Focus the editor when initialized
+            });
+        });
+    </script>
+
 
     <script>
             // for thumbnail image preview

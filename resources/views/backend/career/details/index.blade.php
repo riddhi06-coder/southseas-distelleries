@@ -41,13 +41,13 @@
                         <nav aria-label="breadcrumb" role="navigation">
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item">
-                                    <a href="{{ route('manage-category-listing.index') }}">Home</a>
+                                    <a href="{{ route('manage-job-details.index') }}">Home</a>
                                 </li>
-                                <li class="breadcrumb-item active" aria-current="page">Category Listing</li>
+                                <li class="breadcrumb-item active" aria-current="page">Job Details</li>
                             </ol>
                         </nav>
 
-                        <a href="{{ route('manage-category-listing.create') }}" class="btn btn-primary px-5 radius-30">+ Add Category Listing</a>
+                        <a href="{{ route('manage-job-details.create') }}" class="btn btn-primary px-5 radius-30">+ Add Job Details</a>
                     </div>
 
 
@@ -58,25 +58,23 @@
                             <th>#</th>
                             <th>Category Name</th>
                             <th>Job Role</th>
-                            <th>Department</th>
                             <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
-                            @foreach($details as $index => $item)
+                            @foreach ($details as $key => $item)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $item->category->category_name ?? '-' }}</td>
-                                    <td>{{ $item->job_role }}</td>
-                                    <td>{{ $item->department }}</td>
-                                    <td>
-                                        <a href="{{ route('manage-category-listing.edit', $item->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                        <form action="{{ route('manage-category-listing.destroy', $item->id) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
-                                        </form>
-                                    </td>
+                                <td>{{ $key + 1 }}</td>
+                                <td>{{ $item->categoryList->category_name ?? 'N/A' }}</td>
+                                <td>{{ $item->categoryList->job_role ?? 'N/A' }}</td>
+                                <td>
+                                    <a href="{{ route('manage-job-details.edit', $item->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                    <form action="{{ route('manage-job-details.destroy', $item->id) }}" method="POST" style="display: inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this?')">Delete</button>
+                                    </form>
+                                </td>
                                 </tr>
                             @endforeach
                         </tbody>

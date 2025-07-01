@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 
 use App\Http\Controllers\Backend\CareerListingController;
 use App\Http\Controllers\Backend\CareerCategoryListingController;
+use App\Http\Controllers\Backend\JobDetailsController;
 
 
 use App\Http\Controllers\Frontend\HomeController;
@@ -36,6 +37,9 @@ Route::resource('manage-career-category', CareerListingController::class);
 // ==== Manage Career Category Listing
 Route::resource('manage-category-listing', CareerCategoryListingController::class);
 
+// ==== Manage Career Category Listing
+Route::resource('manage-job-details', JobDetailsController::class);
+
 
 
 // ===================================================================Frontend================================================================
@@ -45,5 +49,7 @@ Route::group(['prefix'=> '', 'middleware'=>[\App\Http\Middleware\PreventBackHist
 
 
     Route::get('/careers', [HomeController::class, 'index'])->name('careers.page');
+    Route::get('/career-category/{slug}', [HomeController::class, 'career_category'])->name('career.category');
+
     
 });
