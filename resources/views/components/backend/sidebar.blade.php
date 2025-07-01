@@ -48,8 +48,8 @@
                       <use href="{{ asset('admin/assets/svg/icon-sprite.svg#stroke-blog') }}"></use>
                     </svg><span>Career</span></a>
                   <ul class="sidebar-submenu">
-                    <li><a href="{{ route('manage-career-category.index') }}">Career Category</a></li>
-                    <li><a href="{{ route('manage-career-category.index') }}">Press Releases</a></li>
+                    <li><a href="{{ route('manage-career-category.index') }}">Category</a></li>
+                    <li><a href="{{ route('manage-category-listing.index') }}">Category Listing</a></li>
                   </ul>
                 </li>
                

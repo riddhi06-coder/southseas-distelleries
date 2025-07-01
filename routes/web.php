@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 use App\Http\Controllers\Backend\CareerListingController;
+use App\Http\Controllers\Backend\CareerCategoryListingController;
 
+
+use App\Http\Controllers\Frontend\HomeController;
 
 Route::get('/', function () {
     return view('frontend.home');
@@ -27,8 +30,11 @@ Route::group(['middleware' => ['auth:web', \App\Http\Middleware\PreventBackHisto
 });
 
 
-// ==== Manage Banner Details in Our community
+// ==== Manage Career Category
 Route::resource('manage-career-category', CareerListingController::class);
+
+// ==== Manage Career Category Listing
+Route::resource('manage-category-listing', CareerCategoryListingController::class);
 
 
 
@@ -38,6 +44,6 @@ Route::resource('manage-career-category', CareerListingController::class);
 Route::group(['prefix'=> '', 'middleware'=>[\App\Http\Middleware\PreventBackHistoryMiddleware::class]],function(){
 
 
-    Route::get('/community', [HomeController::class, 'index'])->name('community.page');
+    Route::get('/careers', [HomeController::class, 'index'])->name('careers.page');
     
 });
