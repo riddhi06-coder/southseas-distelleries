@@ -51,10 +51,7 @@ class HomeController extends Controller
     
     public function job_details($slug)
     {
-        // First, find the job role (CareerCategoryList) by slug
-        // $category = CareerCategoryList::where('slug', $slug)->firstOrFail();
-
-            $category = DB::table('career_category_listing as ccl')
+        $category = DB::table('career_category_listing as ccl')
                     ->join('career_category as cc', 'cc.id', '=', 'ccl.category_id')
                     ->select('ccl.*', 'cc.category_slug as category_slug')
                     ->where('ccl.slug', $slug)
@@ -83,6 +80,11 @@ class HomeController extends Controller
         return view('frontend.job-details', compact('jobDetail','otherJobs','category','jobDetails'));
     }
 
+
+    public function careers_form()
+    {
+        return view('frontend.careers-form');
+    }
 
 
 }
