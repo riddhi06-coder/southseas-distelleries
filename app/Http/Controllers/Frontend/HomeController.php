@@ -30,8 +30,7 @@ class HomeController extends Controller
     }
     
 
-
-    public function career_category($slug)
+    public function career_category($slug, Request $request)
     {
         $job = CareerCategory::where('category_slug', $slug)->whereNull('deleted_by')->firstOrFail();
 
@@ -40,15 +39,26 @@ class HomeController extends Controller
                     ->orderBy('inserted_at', 'asc')
                     ->first();
 
-        $details = CareerCategoryList::where('category_id', $job->id)
-                    ->whereNull('deleted_by')
-                    ->get();
+        $keyword = $request->input('keyword');
 
-        return view('frontend.career-listing', compact('job', 'banner', 'details'));
+        $details = CareerCategoryList::where('category_id', $job->id)
+                    ->whereNull('deleted_by');
+
+        // ✅ Apply filtering if keyword is present
+        if (!empty($keyword)) {
+            $details = $details->where(function ($q) use ($keyword) {
+                $q->where('job_role', 'like', '%' . $keyword . '%')
+                ->orWhere('department', 'like', '%' . $keyword . '%')
+                ->orWhere('location', 'like', '%' . $keyword . '%');
+            });
+        }
+
+        $details = $details->get(); // Run the query
+
+        return view('frontend.career-listing', compact('job', 'banner', 'details', 'keyword'));
     }
 
 
-    
     public function job_details($slug)
     {
         $category = DB::table('career_category_listing as ccl')
@@ -80,11 +90,12 @@ class HomeController extends Controller
         return view('frontend.job-details', compact('jobDetail','otherJobs','category','jobDetails'));
     }
 
-
     public function careers_form()
     {
         return view('frontend.careers-form');
     }
+
+  
 
 
 }

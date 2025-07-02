@@ -112,12 +112,15 @@
                   <!-- First Column -->
                   <div class="col-md-9">
                     <!-- Search Input with Icon -->
-                    <div class="input-group search-box">
-                      <input type="text" class="form-control" placeholder="Search by category, keyword, or location">
-                      <span class="input-group-addon">
-                        <i class="fa fa-search"></i>
-                      </span>
-                    </div>
+                    <form method="GET" action="">
+                      <div class="input-group search-box">
+                        <input type="text" name="keyword" class="form-control" placeholder="Search by category, keyword, or location" value="{{ request('keyword') }}">
+                        <span class="input-group-addon" onclick="this.closest('form').submit()" style="cursor:pointer;">
+                          <i class="fa fa-search"></i>
+                        </span>
+                      </div>
+                    </form>
+
 
                     <!-- Checkbox and Button Row -->
                     <div class="checkbox-row">
@@ -175,27 +178,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($details as $item)
-                    <tr class="single-opening">
+                    @forelse($details as $item)
+                      <tr class="single-opening">
                         <td>
-                        <a href="{{ route('job.details', $item->slug) }}">
+                          <a href="{{ route('job.details', $item->slug) }}">
                             <h2 class="text-left">{{ $item->job_role }}</h2>
-                        </a>
+                          </a>
                         </td>
                         <td><h4>{{ $item->department }}</h4></td>
                         <td><h6>{{ $item->location }}</h6></td>
                         <td>
-                        <div class="opening-btn">
-                            <a href="#">
-                            <button class="btn btn-primary">Apply Now</button>
-                            </a>
+                          <div class="opening-btn">
+                            <a href="#"><button class="btn btn-primary">Apply Now</button></a>
                             <a href="#"><img src="{{ asset('frontend/assets/img/icon/share.png') }}" alt="Share" /></a>
-                        </div>
+                          </div>
                         </td>
-                    </tr>
-                    @endforeach
+                      </tr>
+                    @empty
+                      <tr><td colspan="4">No job found for your search.</td></tr>
+                    @endforelse
+
                 </tbody>
-                </table>
+
+            </table>
 
           </div>
 
@@ -263,6 +268,8 @@
         </div>
       </div>
     </section>
+
+
     <!-- Modal -->
     <div id="legacy-one" class="modal legacy-content-popup fade" role="dialog">
       <div class="modal-dialog">
