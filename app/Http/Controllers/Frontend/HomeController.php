@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 
 use App\Models\CareerCategory;
 use App\Models\CareerCategoryList;
+use App\Models\JobDetails;
 
 
 use Carbon\Carbon;
@@ -44,6 +45,42 @@ class HomeController extends Controller
                     ->get();
 
         return view('frontend.career-listing', compact('job', 'banner', 'details'));
+    }
+
+
+    
+    public function job_details($slug)
+    {
+        // First, find the job role (CareerCategoryList) by slug
+        // $category = CareerCategoryList::where('slug', $slug)->firstOrFail();
+
+            $category = DB::table('career_category_listing as ccl')
+                    ->join('career_category as cc', 'cc.id', '=', 'ccl.category_id')
+                    ->select('ccl.*', 'cc.category_slug as category_slug')
+                    ->where('ccl.slug', $slug)
+                    ->whereNull('ccl.deleted_by')
+                    ->firstOrFail();
+
+        // dd($category);
+
+        $jobDetails = JobDetails::with('categoryList')
+                ->whereNull('deleted_by')
+                ->firstOrFail();
+        // dd($jobDetails);
+
+        $jobDetail = JobDetails::with('categoryList')
+                ->where('job_id', $category->id)
+                ->whereNull('deleted_by')
+                ->firstOrFail();
+
+
+        $otherJobs = JobDetails::with('categoryList')
+                ->where('id', '!=', $jobDetail->id)
+                ->whereNull('deleted_by')
+                ->limit(5)
+                ->get();
+
+        return view('frontend.job-details', compact('jobDetail','otherJobs','category','jobDetails'));
     }
 
 

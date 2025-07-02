@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -30,6 +29,7 @@
     </script>
   </head>
 
+
   <body>
     <div class="main_menu_site page_menu">
       <nav>
@@ -54,7 +54,6 @@
               </div>
             </div>
             <div class="col-md-4">
-
               <nav class="navigation">
                 <ul class="mainmenu">
                   <li><a href="our-legacy.html">OUR LEGACY</a></li>
@@ -74,134 +73,69 @@
             </div>
           </div>
           <div class="social">
-
             <p>©2024 South Seas Distilleries & Breweries Pvt. Ltd.</p>
           </div>
         </div>
       </div>
     </div>
-
+   
     <section class="craft-title-wrap">
-      <div class="container-fluid no-padding">
-        <div class="row no-margin craft-row">
-          <div class="col-md-4 no-padding craft-img"
-              @if(!empty($banner->banner_image))
-                        style="background-image: url('{{ asset('uploads/careers/' . $banner->banner_image) }}'); background-size: cover; background-position: center; background-repeat: no-repeat;"
-                    @endif>
-          </div>
-          <div class="col-md-8 no-padding">
-            <div class="craft-text">
-              <h4>{{ $banner->banner_heading ?? '' }}</h4>
+        <div class="container-fluid no-padding">
+            <div class="row no-margin craft-row">
+
+            <!-- Banner Image Section -->
+            <div class="col-md-4 no-padding craft-img"
+                @if(!empty($jobDetails->banner_image))
+                    style="background-image: url('{{ asset('uploads/careers/' . $jobDetails->banner_image) }}'); background-size: cover; background-position: center; background-repeat: no-repeat;"
+                @endif>
             </div>
-          </div>
+
+            <!-- Banner Text Section -->
+            <div class="col-md-8 no-padding">
+                <div class="craft-text">
+                <h4>{{ $jobDetails->banner_heading ?? 'Craft Your Career With South Seas Distilleries' }}</h4>
+                </div>
+            </div>
+
+            </div>
         </div>
-      </div>
     </section>
 
 
-    <div class="openings-dashboard-wrap">
+    <div class="opening-detail-wrap">
       <div class="container">
         <div class="row">
-          <div class="col-md-12">
-            <div class="openings-search">
-              <p>{!! $banner->section_heading ?? '' !!}</p>
+          <div class="col-md-8">
+            <div class="opening-detail-text">
+              <a href="{{ route('career.category', ['slug' => $category->category_slug]) }}"><img src="{{ asset('frontend/assets/img/icon/left-arrow.png') }}"/>Return to Search</a>
+              <h1>{{ $jobDetail->categoryList->job_role ?? 'Job Role Not Found' }}</h1>
 
-              <div class="search-box-wrap">
-                <div class="row">
+                <p>{!! $jobDetail->job_details ?? 'Job Role Not Found' !!}</p><br>
 
-                  <!-- First Column -->
-                  <div class="col-md-9">
-                    <!-- Search Input with Icon -->
-                    <div class="input-group search-box">
-                      <input type="text" class="form-control" placeholder="Search by category, keyword, or location">
-                      <span class="input-group-addon">
-                        <i class="fa fa-search"></i>
-                      </span>
-                    </div>
+                <p><a href="careers-form.html" class="btn">Apply Now</a></p>
 
-                    <!-- Checkbox and Button Row -->
-                    <div class="checkbox-row">
-                      <div class="checkbox">
-                        <label><input type="checkbox"> Entry Level Jobs</label>
-                      </div>
-                      <button class="btn btn-primary">Share Search Results <img src="{{ asset('frontend/assets/img/icon/share.png') }}" /></button>
-                    </div>
-                  </div>
+            </div>
+          </div>
 
-                  <!-- Second Column -->
-                  <div class="col-md-3">
-                    <!-- Job Search Filters Dropdown -->
-                    <div class="career-dropdown">
-                      <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                          Job Search Filters <img src="{{ asset('frontend/assets/img/icon/down-arrow.png') }}" />
-                        </button>
-                        <ul class="dropdown-menu">
-                          <li><a href="#">Remote Only</a></li>
-                          <li><a href="#">Full-Time</a></li>
-                          <li><a href="#">Part-Time</a></li>
-                          <li><a href="#">Internships</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
 
+          <div class="col-md-4">
+            <div class="opening-list">
+              <a href="careers-form.html" class="btn">Apply Now</a>
+                <div class="opening-opportunity-wrap">
+                    <h2>Other Opportunities For You</h2>
+
+                    @foreach($otherJobs as $job)
+                        <div class="single-opportunity">
+                            <h3>{{ $job->categoryList->job_role ?? 'Job Role' }}</h3>
+                            <p>{!! \Illuminate\Support\Str::words(strip_tags($job->job_details), 4) !!}</p>
+                        </div>
+                    @endforeach
                 </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    
-    <section class="openings-list-wrap">
-      <div class="container">
-        <div class="row">
-
-          <div class="col-md-12">
-            <div class="selected-filter">
-              <ul>
-                <li><img src="{{ asset('frontend/assets/img/icon/x-mark.png') }}">Human Resources</li>
-              </ul>
-            </div>
-            <table class="table responsive-job-table">
-                <thead class="single-head-opening">
-                    <tr>
-                    <th><h2 class="text-left">Job</h2></th>
-                    <th><h2>Department</h2></th>
-                    <th><h2>Location</h2></th>
-                    <th><h2>&nbsp;</h2></th> 
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($details as $item)
-                    <tr class="single-opening">
-                        <td>
-                        <a href="{{ route('job.details', $item->slug) }}">
-                            <h2 class="text-left">{{ $item->job_role }}</h2>
-                        </a>
-                        </td>
-                        <td><h4>{{ $item->department }}</h4></td>
-                        <td><h6>{{ $item->location }}</h6></td>
-                        <td>
-                        <div class="opening-btn">
-                            <a href="#">
-                            <button class="btn btn-primary">Apply Now</button>
-                            </a>
-                            <a href="#"><img src="{{ asset('frontend/assets/img/icon/share.png') }}" alt="Share" /></a>
-                        </div>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-                </table>
-
-          </div>
-
-        </div>
-      </div>
-    </section>
 
 
     <section class="article-one-sec">
@@ -582,6 +516,7 @@
     </div>
 
 
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 

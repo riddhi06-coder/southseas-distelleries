@@ -50,6 +50,7 @@ Route::group(['prefix'=> '', 'middleware'=>[\App\Http\Middleware\PreventBackHist
 
     Route::get('/careers', [HomeController::class, 'index'])->name('careers.page');
     Route::get('/career-category/{slug}', [HomeController::class, 'career_category'])->name('career.category');
+    Route::get('/job-details/{slug}', [HomeController::class, 'job_details'])->name('job.details');
 
     
 });
