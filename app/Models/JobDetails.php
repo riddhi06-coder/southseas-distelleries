@@ -28,7 +28,7 @@ class JobDetails extends Model
 
     public function category()
     {
-        return $this->belongsTo(CareerCategory::class, 'category_id'); // or job_category_id
+        return $this->belongsTo(CareerCategory::class, 'category_name'); 
     }
 
     public function categoryList()

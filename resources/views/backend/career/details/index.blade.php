@@ -64,19 +64,22 @@
                         <tbody>
                             @foreach ($details as $key => $item)
                                 <tr>
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{ $item->categoryList->category_name ?? 'N/A' }}</td>
-                                <td>{{ $item->categoryList->job_role ?? 'N/A' }}</td>
-                                <td>
-                                    <a href="{{ route('manage-job-details.edit', $item->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                                    <form action="{{ route('manage-job-details.destroy', $item->id) }}" method="POST" style="display: inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this?')">Delete</button>
-                                    </form>
-                                </td>
+                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ $item->category_name ?? 'N/A' }}</td>
+                                    <td>{{ $item->job_role ?? 'N/A' }}</td>
+                                    <td>
+                                        <a href="{{ route('manage-job-details.edit', $item->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                                        <form action="{{ route('manage-job-details.destroy', $item->id) }}" method="POST" style="display: inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this?')">Delete</button>
+                                        </form>
+                                    </td>
                                 </tr>
                             @endforeach
+
+
+
                         </tbody>
                       </table>
                     </div>
