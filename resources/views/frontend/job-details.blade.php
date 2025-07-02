@@ -112,7 +112,7 @@
 
                 <p>{!! $jobDetail->job_details ?? 'Job Role Not Found' !!}</p><br>
 
-                <p><a href="careers-form.html" class="btn">Apply Now</a></p>
+                <p><a href="{{ route('careers.form', ['position' => $jobDetail->categoryList->job_role ?? null]) }}" class="btn">Apply Now</a></p>
 
             </div>
           </div>

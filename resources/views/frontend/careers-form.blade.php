@@ -27,6 +27,13 @@
             a.appendChild(r);
         })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
     </script>
+
+    <style>
+
+      .half-field {
+        padding-right: 2%;
+      }
+    </style>
   </head>
   <body>
     <div class="main_menu_site page_menu">
@@ -88,7 +95,8 @@
             <div class="career-form">
               <h2>Share Your Details</h2>
 
-              <form action="contact_mail.php" method="post" id="contactForm" class="contact_form wow fadeInLeft animated" data-wow-delay="600ms" data-wow-duration="600ms" style="visibility: visible; animation-duration: 600ms; animation-delay: 600ms; animation-name: fadeInLeft;" enctype="multipart/form-data">
+              <form action="{{ route('career.submit') }}" method="post" id="contactForm" class="contact_form wow fadeInLeft animated" data-wow-delay="600ms" data-wow-duration="600ms" style="visibility: visible; animation-duration: 600ms; animation-delay: 600ms; animation-name: fadeInLeft;" enctype="multipart/form-data">
+                @csrf
                 <div class="row">
                   <div class="col-md-12">
                     <input type="text" class="form-control placeholder-black" name="name" placeholder="Name *" id="nameInput">
@@ -106,38 +114,40 @@
 
                   <div class="col-md-12">
                     <div class="custom-select-wrapper">
-                      <select class="form-control" name="position" id="positionInput">
-                        <option value="">Position Applying For *</option>
-                        <option value="frontend_developer">Frontend Developer</option>
-                        <option value="backend_developer">Backend Developer</option>
-                        <option value="ui_ux_designer">UI/UX Designer</option>
-                        <option value="project_manager">Project Manager</option>
-                      </select>
-                        <i class="fa fa-caret-down custom-arrow"></i>
+                      <input type="text" class="form-control" name="position" id="positionInput" 
+                            value="{{ $position ?? 'Position Applying For *' }}" readonly>
+                      <i class="fa fa-caret-down custom-arrow" style="display: none;"></i>
                       <div id="step_position_error" class="error-msg" style="color: red;"></div>
                     </div>
                   </div>
-
+                  
                   <div class="col-md-6 half-field">
-                    <input type="text" class="form-control" name="coverletter" id="coverletter" placeholder="Cover Letter">
+                    <label for="coverletter">Upload Cover Letter</label>
+                    <input type="file" class="form-control" name="coverletter" id="coverletter" placeholder="Cover Letter">
+                    <small class="form-text text-muted">Allowed: PDF, Word | Max size: 2MB</small>
                     <div id="cover_letter_error" class="error-msg" style="color: red;"></div>
                   </div>
 
                   <div class="col-md-6 half-field">
-                    <input type="text" class="form-control" name="resume" id="resumeInput" placeholder="Your Resume">
+                    <label for="resumeInput">Upload Resume *</label>
+                    <input type="file" class="form-control" name="resume" id="resumeInput" placeholder="Your Resume">
+                    <small class="form-text text-muted">Allowed: PDF, Word | Max size: 2MB</small>
                     <div id="resume_error" class="error-msg" style="color: red;"></div>
                   </div>
 
                   <div class="col-md-6 half-field">
-                    <input type="text" class="form-control" name="video_resume" id="videoResumeInput" placeholder="Your Video Resume" accept="video/*">
+                    <label for="videoResumeInput">Upload Video Resume</label>
+                    <input type="file" class="form-control" name="video_resume" id="videoResumeInput" placeholder="Your Video Resume" accept="video/*">
+                    <small class="form-text text-muted">Allowed: MP4, MOV | Max size: 4MB</small>
                     <div id="video_resume_error" class="error-msg" style="color: red;"></div>
                   </div>
 
                   <div class="col-md-6 half-field">
-                    <input type="text" class="form-control" name="portfolio" id="portfolioInput" placeholder="Your Portfolio">
+                    <label for="portfolioInput">Upload Portfolio</label>
+                    <input type="file" class="form-control" name="portfolio" id="portfolioInput" placeholder="Your Portfolio">
+                    <small class="form-text text-muted">Allowed: PDF, Word | Max size: 2MB</small>
                     <div id="portfolio_error" class="error-msg" style="color: red;"></div>
                   </div>
-
 
                   <div class="col-md-12 mt-3 text-left-btn">
                     <input type="submit" value="Submit" class="contact-btn btn btn-primary">
@@ -540,6 +550,102 @@
     <script src="{{ asset('frontend/assets/js/owl.carousel.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/wow.min.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/custom.js') }}"></script>
+
+
+    <script>
+      document.getElementById('contactForm').addEventListener('submit', function (e) {
+        let isValid = true;
+
+        // Clear all previous errors
+        document.querySelectorAll('.error-msg').forEach(el => el.innerText = '');
+
+        // Name
+        const name = document.getElementById('nameInput').value.trim();
+        if (!name) {
+          document.getElementById('step_name_error').innerText = 'Name is required.';
+          isValid = false;
+        } else if (/\d/.test(name)) {
+          document.getElementById('step_name_error').innerText = 'Name cannot contain numbers.';
+          isValid = false;
+        }
+
+        // Email
+        const email = document.getElementById('emailInput').value.trim();
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email) {
+          document.getElementById('step_email_error').innerText = 'Email is required.';
+          isValid = false;
+        } else if (!emailPattern.test(email)) {
+          document.getElementById('step_email_error').innerText = 'Enter a valid email address.';
+          isValid = false;
+        }
+
+        // Subject
+        const subject = document.getElementById('subjectInput').value.trim();
+        if (!subject) {
+          document.getElementById('step_service_error').innerText = 'Subject is required.';
+          isValid = false;
+        }
+
+        // Resume - Required
+        const resume = document.getElementById('resumeInput').files[0];
+        if (!resume) {
+          document.getElementById('resume_error').innerText = 'Resume is required.';
+          isValid = false;
+        } else {
+          const allowedResumeTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+          if (!allowedResumeTypes.includes(resume.type)) {
+            document.getElementById('resume_error').innerText = 'Allowed types: PDF, DOC, DOCX.';
+            isValid = false;
+          } else if (resume.size > 2 * 1024 * 1024) {
+            document.getElementById('resume_error').innerText = 'Max file size: 2MB.';
+            isValid = false;
+          }
+        }
+
+        // Cover Letter - Optional
+        const coverletter = document.getElementById('coverletter').files[0];
+        if (coverletter) {
+          const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+          if (!allowedTypes.includes(coverletter.type)) {
+            document.getElementById('cover_letter_error').innerText = 'Allowed types: PDF, DOC, DOCX.';
+            isValid = false;
+          } else if (coverletter.size > 2 * 1024 * 1024) {
+            document.getElementById('cover_letter_error').innerText = 'Max file size: 2MB.';
+            isValid = false;
+          }
+        }
+
+        // Video Resume - Optional
+        const video = document.getElementById('videoResumeInput').files[0];
+        if (video) {
+          const allowedVideoTypes = ['video/mp4', 'video/quicktime'];
+          if (!allowedVideoTypes.includes(video.type)) {
+            document.getElementById('video_resume_error').innerText = 'Allowed types: MP4, MOV.';
+            isValid = false;
+          } else if (video.size > 4 * 1024 * 1024) {
+            document.getElementById('video_resume_error').innerText = 'Max file size: 4MB.';
+            isValid = false;
+          }
+        }
+
+        // Portfolio - Optional
+        const portfolio = document.getElementById('portfolioInput').files[0];
+        if (portfolio) {
+          const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+          if (!allowedTypes.includes(portfolio.type)) {
+            document.getElementById('portfolio_error').innerText = 'Allowed types: PDF, DOC, DOCX.';
+            isValid = false;
+          } else if (portfolio.size > 2 * 1024 * 1024) {
+            document.getElementById('portfolio_error').innerText = 'Max file size: 2MB.';
+            isValid = false;
+          }
+        }
+
+        if (!isValid) e.preventDefault();
+      });
+    </script>
+
 
   </body>
 </html>

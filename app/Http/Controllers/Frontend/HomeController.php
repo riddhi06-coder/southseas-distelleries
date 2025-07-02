@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 
 use App\Models\CareerCategory;
 use App\Models\CareerCategoryList;
@@ -106,10 +107,69 @@ class HomeController extends Controller
         return view('frontend.job-details', compact('jobDetail','otherJobs','category','jobDetails'));
     }
 
-    public function careers_form()
+    public function careers_form(Request $request)
     {
-        return view('frontend.careers-form');
+        $position = $request->query('position');
+        return view('frontend.careers-form', compact('position'));
     }
+
+
+ public function submitCareerForm(Request $request)
+{
+    // Validation
+    $request->validate([
+        'name' => 'required|regex:/^[a-zA-Z\s]+$/',
+        'email' => 'required|email',
+        'subject' => 'required|string',
+        'position' => 'required|string',
+        'resume' => 'required|file|mimes:pdf,doc,docx|max:2048',
+        'coverletter' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+        'video_resume' => 'nullable|file|mimes:mp4,mov|max:4096',
+        'portfolio' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+    ]);
+
+    // Prepare file attachment info for view
+    $attachedNames = [];
+    foreach (['resume', 'coverletter', 'video_resume', 'portfolio'] as $field) {
+        if ($request->hasFile($field)) {
+            $attachedNames[$field] = $request->file($field)->getClientOriginalName();
+        }
+    }
+
+    // Email Data
+    $data = [
+        'name'     => $request->name,
+        'email'    => $request->email,
+        'subject'  => $request->subject,
+        'position' => $request->position,
+        'attached' => $attachedNames,
+    ];
+
+    // Send Email to Admin
+    Mail::send('frontend.career-form-mail', $data, function ($message) use ($data, $request) {
+        $message->to('riddhi@matrixbricks.com', 'Career Enquiry Details')
+                ->subject('New Career Application - ' . $data['position']);
+
+        foreach (['resume', 'coverletter', 'video_resume', 'portfolio'] as $field) {
+            if ($request->hasFile($field)) {
+                $file     = $request->file($field);
+                $filename = $file->getClientOriginalName();
+                $message->attach($file->getRealPath(), [
+                    'as'   => $filename,
+                    'mime' => $file->getClientMimeType(),
+                ]);
+            }
+        }
+    });
+
+    // Optional: Confirmation email to user
+    Mail::send('frontend.contact_mail_confirmation', [], function ($message) use ($data) {
+        $message->to($data['email'])->subject('Thanks for Reaching Out!');
+    });
+
+    return redirect()->back()->with('message', 'Application submitted successfully!');
+}
+
 
   
 

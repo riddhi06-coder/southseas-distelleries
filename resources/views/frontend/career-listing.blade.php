@@ -195,7 +195,10 @@
                         <td><h6>{{ $item->location }}</h6></td>
                         <td>
                           <div class="opening-btn">
-                            <a href="#"><button class="btn btn-primary">Apply Now</button></a>
+                            <a href="{{ route('careers.form', ['position' => $item->job_role]) }}">
+                              <button class="btn btn-primary">Apply Now</button>
+                            </a>
+
                             <a href="#"><img src="{{ asset('frontend/assets/img/icon/share.png') }}" alt="Share" /></a>
                           </div>
                         </td>
