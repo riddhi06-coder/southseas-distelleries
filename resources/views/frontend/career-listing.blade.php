@@ -121,9 +121,9 @@
 
                     <!-- Checkbox and Button Row -->
                     <div class="checkbox-row">
-                      <div class="checkbox">
+                      <!-- <div class="checkbox">
                         <label><input type="checkbox"> Entry Level Jobs</label>
-                      </div>
+                      </div> -->
                       <button class="btn btn-primary">Share Search Results <img src="{{ asset('frontend/assets/img/icon/share.png') }}" /></button>
                     </div>
                   </div>
@@ -160,11 +160,11 @@
         <div class="row">
 
           <div class="col-md-12">
-            <div class="selected-filter">
+            <!-- <div class="selected-filter">
               <ul>
                 <li><img src="{{ asset('frontend/assets/img/icon/x-mark.png') }}">Human Resources</li>
               </ul>
-            </div>
+            </div> -->
             <table class="table responsive-job-table">
                 <thead class="single-head-opening">
                     <tr>

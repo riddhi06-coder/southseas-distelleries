@@ -120,9 +120,9 @@
 
           <div class="col-md-4">
             <div class="opening-list">
-              <a href="careers-form.html" class="btn">Apply Now</a>
+              <!-- <a href="careers-form.html" class="btn">Apply Now</a> -->
                 <div class="opening-opportunity-wrap">
-                    <h2>Other Opportunities For You</h2>
+                    <h2>{{ $jobDetails->section_heading ?? '-' }}</h2>
 
                     @foreach($otherJobs as $job)
                         <div class="single-opportunity">
@@ -149,7 +149,7 @@
         </div>
       </div>
     </section>
-    <section class="footer-one">
+    <section class="footer-one">    
       <div class="container">
         <div class="row">
           <div class="col-md-1">
