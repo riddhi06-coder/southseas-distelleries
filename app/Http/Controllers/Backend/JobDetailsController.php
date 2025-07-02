@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 use App\Models\CareerCategory;
 use App\Models\CareerCategoryList;
@@ -50,7 +51,12 @@ class JobDetailsController extends Controller
         $validated = $request->validate([
             'banner_heading'   => 'nullable|string|max:255',
             'banner_image'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'job_category'     => 'required|integer|exists:career_category_listing,id|unique:job_details,job_id',
+            'job_category'     => [
+                'required',
+                'integer',
+                'exists:career_category_listing,id',
+                Rule::unique('job_details', 'job_id')->whereNull('deleted_by'),
+            ],
             'section_heading'  => 'nullable|string|max:255',
             'job_details'      => 'nullable|string',
         ], [
