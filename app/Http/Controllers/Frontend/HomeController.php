@@ -40,22 +40,38 @@ class HomeController extends Controller
                     ->first();
 
         $keyword = $request->input('keyword');
+        $jobType = $request->input('job_type');
 
-        $details = CareerCategoryList::where('category_id', $job->id)
-                    ->whereNull('deleted_by');
 
-        // ✅ Apply filtering if keyword is present
+        // Get filters
+        $keyword = $request->input('keyword');
+        $jobType = $request->input('job_type');
+
+        // Base query with join to job_details
+        $details = CareerCategoryList::where('career_category_listing.category_id', $job->id)
+            ->whereNull('career_category_listing.deleted_by')
+            ->leftJoin('job_details', 'career_category_listing.id', '=', 'job_details.job_id')
+            ->select('career_category_listing.*'); 
+
+        // Keyword-based search (title, dept, location)
         if (!empty($keyword)) {
             $details = $details->where(function ($q) use ($keyword) {
-                $q->where('job_role', 'like', '%' . $keyword . '%')
-                ->orWhere('department', 'like', '%' . $keyword . '%')
-                ->orWhere('location', 'like', '%' . $keyword . '%');
+                $q->where('career_category_listing.job_role', 'like', '%' . $keyword . '%')
+                ->orWhere('career_category_listing.department', 'like', '%' . $keyword . '%')
+                ->orWhere('career_category_listing.location', 'like', '%' . $keyword . '%');
             });
         }
 
-        $details = $details->get(); // Run the query
+        // Filter by Job Type found in job_details.job_details
+        if (!empty($jobType)) {
+            $details = $details->where('job_details.job_details', 'like', '%' . $jobType . '%');
+        }
 
-        return view('frontend.career-listing', compact('job', 'banner', 'details', 'keyword'));
+        // Execute the query
+        $details = $details->get();
+
+        return view('frontend.career-listing', compact('job', 'banner', 'details', 'keyword', 'jobType'));
+
     }
 
 

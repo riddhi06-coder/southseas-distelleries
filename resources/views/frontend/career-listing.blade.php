@@ -123,30 +123,36 @@
 
 
                     <!-- Checkbox and Button Row -->
-                    <div class="checkbox-row">
-                      <!-- <div class="checkbox">
+                    <!-- <div class="checkbox-row">
+                      <div class="checkbox">
                         <label><input type="checkbox"> Entry Level Jobs</label>
-                      </div> -->
+                      </div>
                       <button class="btn btn-primary">Share Search Results <img src="{{ asset('frontend/assets/img/icon/share.png') }}" /></button>
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- Second Column -->
                   <div class="col-md-3">
                     <!-- Job Search Filters Dropdown -->
-                    <div class="career-dropdown">
-                      <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                          Job Search Filters <img src="{{ asset('frontend/assets/img/icon/down-arrow.png') }}" />
-                        </button>
-                        <ul class="dropdown-menu">
-                          <li><a href="#">Remote Only</a></li>
-                          <li><a href="#">Full-Time</a></li>
-                          <li><a href="#">Part-Time</a></li>
-                          <li><a href="#">Internships</a></li>
-                        </ul>
-                      </div>
+                    @php
+                        $selectedJobType = $jobType ?? 'Job Search Filters';
+                    @endphp
+
+                    <div class="dropdown">
+                      <button class="btn btn-primary dropdown-toggle" type="button" id="jobTypeDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ $selectedJobType }} <img src="{{ asset('frontend/assets/img/icon/down-arrow.png') }}" />
+                      </button>
+                      
+                      <ul class="dropdown-menu" aria-labelledby="jobTypeDropdown">
+                        <li><a href="#" onclick="submitFilter('')">Clear Filter</a></li> 
+                        <li><a href="#" onclick="submitFilter('Remote Only')">Remote Only</a></li>
+                        <li><a href="#" onclick="submitFilter('Full-Time')">Full-Time</a></li>
+                        <li><a href="#" onclick="submitFilter('Part-Time')">Part-Time</a></li>
+                        <li><a href="#" onclick="submitFilter('Internships')">Internships</a></li>
+                        
+                      </ul>
                     </div>
+
                   </div>
 
                 </div>
@@ -595,6 +601,38 @@
     <script src="{{ asset('frontend/assets/js/owl.carousel.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/wow.min.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/custom.js') }}"></script>
+
+
+    
+    <script>
+      function submitFilter(type) {
+        // Create a form dynamically
+        const form = document.createElement('form');
+        form.method = 'GET';
+        form.action = ''; // current page
+
+        // Add job_type
+        const inputType = document.createElement('input');
+        inputType.type = 'hidden';
+        inputType.name = 'job_type';
+        inputType.value = type;
+        form.appendChild(inputType);
+
+        // If there's already a keyword in the input box, include it
+        const keywordInput = document.querySelector('input[name="keyword"]');
+        if (keywordInput && keywordInput.value) {
+            const inputKeyword = document.createElement('input');
+            inputKeyword.type = 'hidden';
+            inputKeyword.name = 'keyword';
+            inputKeyword.value = keywordInput.value;
+            form.appendChild(inputKeyword);
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+      }
+    </script>
+
 
   </body>
 </html>
