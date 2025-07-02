@@ -48,18 +48,20 @@ class JobDetailsController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'banner_heading' => 'nullable|string|max:255',
-            'banner_image'   => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'job_category'   => 'required|integer|exists:career_category_listing,id',
-            'section_heading'=> 'nullable|string|max:255',
-            'job_details'    => 'nullable|string',
+            'banner_heading'   => 'nullable|string|max:255',
+            'banner_image'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'job_category'     => 'required|integer|exists:career_category_listing,id|unique:job_details,job_id',
+            'section_heading'  => 'nullable|string|max:255',
+            'job_details'      => 'nullable|string',
         ], [
-            'banner_image.image'   => 'The banner must be an image.',
-            'banner_image.mimes'   => 'Only JPG, JPEG, PNG, and WEBP formats are allowed for banner.',
-            'banner_image.max'     => 'The banner image must be less than 2MB.',
-            'job_category.required'=> 'The job role is required.',
-            'job_category.exists'  => 'The selected job role does not exist.',
+            'banner_image.image'    => 'The banner must be an image.',
+            'banner_image.mimes'    => 'Only JPG, JPEG, PNG, and WEBP formats are allowed for banner.',
+            'banner_image.max'      => 'The banner image must be less than 2MB.',
+            'job_category.required' => 'The job role is required.',
+            'job_category.exists'   => 'The selected job role does not exist.',
+            'job_category.unique'   => 'This job role already exists.',
         ]);
+
 
         $bannerImageName = null;
 
@@ -101,7 +103,7 @@ class JobDetailsController extends Controller
             'section_heading'  => 'nullable|string|max:255',
             'job_details'      => 'nullable|string',
         ], [
-            'banner_image.image'   => 'The banner must be an image.',
+            'banner_image.image'   => 'The banner must be an image.',   
             'banner_image.mimes'   => 'Only JPG, JPEG, PNG, and WEBP formats are allowed for banner.',
             'banner_image.max'     => 'The banner image must be less than 2MB.',
             'job_category.required'=> 'The job role is required.',
